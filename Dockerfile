@@ -13,14 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 
 # Convert UTF-16 to UTF-8 then install
-RUN python -c "
-with open('requirements.txt', 'rb') as f:
-    content = f.read()
-if content[:2] in (b'\xff\xfe', b'\xfe\xff'):
-    content = content.decode('utf-16').encode('utf-8')
-with open('requirements.txt', 'wb') as f:
-    f.write(content)
-" && \
+RUN python -c "f=open('requirements.txt','rb');c=f.read();f.close();c=c.decode('utf-16').encode('utf-8') if c[:2] in (b'\xff\xfe',b'\xfe\xff') else c;f=open('requirements.txt','wb');f.write(c);f.close()" && \
     python -m pip install --upgrade pip --root-user-action=ignore && \
     python -m pip install --no-cache-dir -r requirements.txt --root-user-action=ignore
 
