@@ -1,0 +1,14 @@
+models:
+  - type: main
+    engine: openai
+    model: llama3-8b-8192
+  - type: embeddings
+    engine: openai
+    model: nomic-embed-text-v1.5
+
+# Use Groq as the judge for NeMo Guardrails rails
+rails:
+  input:
+    flows:
+      - check harmful input
+      - check offensive questions
